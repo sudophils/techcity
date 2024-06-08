@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:techcity/widgets/header.dart';
 
@@ -42,7 +41,7 @@ class Home extends StatelessWidget {
                   child: TextField(
                 onTap: () => showDatePicker(
                     context: context,
-                    firstDate: DateTime(2017, 9, 7, 17, 30),
+                    firstDate: DateTime(2017),
                     lastDate: DateTime.now()),
                 decoration: const InputDecoration(hintText: "DOB"),
               )),
@@ -50,6 +49,58 @@ class Home extends StatelessWidget {
           ),
           const TextField(
             decoration: InputDecoration(hintText: "Enter Course"),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            children: [
+              Expanded(
+                  child: TextField(
+                onTap: () async => await showTimePicker(
+                    context: context, initialTime: TimeOfDay.now()),
+                decoration: const InputDecoration(hintText: "Time"),
+              )),
+              const SizedBox(
+                width: 16,
+              ),
+              const Expanded(
+                flex: 4,
+                child: TextField(
+                  decoration: InputDecoration(hintText: "Day"),
+                ),
+              ),
+            ],
+          ),
+          const TextField(
+            decoration: InputDecoration(hintText: "State of origin"),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          const TextField(
+            maxLines: 4,
+            maxLength: 2000,
+            keyboardType: TextInputType.multiline,
+            decoration: InputDecoration(
+              hintText: "Short essay",
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+                shape: BoxShape.rectangle,
+                color: Colors.red),
+            child: const Center(
+              child: Text(
+                "Submit detail",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           )
         ],
       ),
