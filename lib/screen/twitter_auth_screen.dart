@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:techcity/widgets/techcity_button.dart';
 
 class TwitterAuthScreen extends StatefulWidget {
   const TwitterAuthScreen({super.key});
@@ -31,34 +32,12 @@ class _TwitterAuthScreenState extends State<TwitterAuthScreen> {
         height: value,
       );
     }
-
-    Widget buildButton({required String label, required bool showBg}) {
-      return Align(
-        alignment: Alignment.center,
-        child: Container(
-          decoration: BoxDecoration(
-              color: showBg ? Colors.white : Colors.transparent,
-              border: showBg ? null : Border.all(width: 2, color: Colors.white),
-              borderRadius: BorderRadius.circular(15)),
-          width: 200,
-          height: 45,
-          child: Center(
-              child: Text(label,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: showBg ? Colors.blueAccent : Colors.white))),
-        ),
-      );
-    }
-
+   
     Widget buildFingerPrint() {
-      return const Center(
-        child: Icon(
-          Icons.fingerprint,
-          size: 120,
-          color: Colors.white,
-        ),
+      return const Icon(
+        Icons.fingerprint,
+        size: 120,
+        color: Colors.white,
       );
     }
 
@@ -83,10 +62,7 @@ class _TwitterAuthScreenState extends State<TwitterAuthScreen> {
 
             verticalSpace(value: 50),
 
-            /// add the buttons for signup and login
-            buildButton(label:'Signup',showBg: true),
-            verticalSpace(value: 16),
-            buildButton(label:'Login', showBg:false),
+            // use the new class to create the button
 
             verticalSpace(value: 24), // give space
 
