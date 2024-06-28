@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:techcity/screen/util.dart';
+import 'package:techcity/widgets/tweet_widget.dart';
 
 class TwitterHome extends StatefulWidget {
   const TwitterHome({super.key});
@@ -8,7 +9,13 @@ class TwitterHome extends StatefulWidget {
   State<TwitterHome> createState() => _TwitterHomeState();
 }
 
-class _TwitterHomeState extends State<TwitterHome> {
+class _TwitterHomeState extends State<TwitterHome>
+    with SingleTickerProviderStateMixin {
+  final List<Tab> myTwitterTab = <Tab>[
+    const Tab(text: 'For you'),
+    const Tab(text: 'Following'),
+  ];
+  late TabController tabController;
   int currentIndex = 0;
 
   List<BottomNavigationBarItem> navItems = [
@@ -24,7 +31,9 @@ class _TwitterHomeState extends State<TwitterHome> {
   Widget buildHomeBody(int index) {
     switch (index) {
       case 0:
-        return const TwitterThreadPage();
+        return TwitterThreadPage(
+          controller: tabController,
+        );
       case 1:
         return Center(child: Text('Search'));
       case 2:
@@ -36,8 +45,16 @@ class _TwitterHomeState extends State<TwitterHome> {
       case 5:
         return Center(child: Text('Message'));
       default:
-        return const TwitterThreadPage();
+        return TwitterThreadPage(
+          controller: tabController,
+        );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -48,20 +65,21 @@ class _TwitterHomeState extends State<TwitterHome> {
           Padding(
             padding:
                 EdgeInsets.only(right: MediaQuery.of(context).size.width / 2),
-            child: Icon(FontAwesomeIcons.twitter, color: Colors.blueAccent),
+            child: Image.asset(
+              'assets/images/tech_city_logo.png',
+              width: 30,
+            ),
           )
         ],
-        // centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:
-              ClipOval(child: Image.asset('assets/images/tech_city_logo.png')),
+        bottom: TabBar(
+          controller: tabController,
+          tabs: myTwitterTab,
         ),
       ),
       body: buildHomeBody(currentIndex),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black54,
+        selectedItemColor: Colors.red,
+        unselectedItemColor: Colors.red[200],
         showSelectedLabels: false,
         currentIndex: currentIndex,
         onTap: (index) {
@@ -77,14 +95,59 @@ class _TwitterHomeState extends State<TwitterHome> {
 }
 
 class TwitterThreadPage extends StatelessWidget {
-  const TwitterThreadPage({super.key});
+  final TabController controller;
+
+  const TwitterThreadPage({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [],
-      ),
+    return TabBarView(
+      controller: controller,
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              ...tweetList.map((t) => TweetWidget(
+                  tweetText: t.tweetText,
+                  userName: t.userName,
+                  handle: t.handle,
+                  tweetPhoto: t.tweetPhoto,
+                  time: t.time,
+                  userAvatar: t.userAvatar,
+                  likeCount: t.likeCount,
+                  retweetCount: t.retweetCount,
+                  impressionCount: t.impressionCount,
+                  commentCount: t.commentCount))
+            ],
+          ),
+        ),
+        Text("Techcity"),
+      ],
     );
   }
+}
+
+class Tweet {
+  String tweetText;
+  String userName;
+  String handle;
+  String tweetPhoto;
+  String time;
+  String userAvatar;
+  String likeCount;
+  double retweetCount;
+  double impressionCount;
+  double commentCount;
+
+  Tweet(
+      {required this.commentCount,
+      required this.tweetText,
+      required this.handle,
+      required this.impressionCount,
+      required this.likeCount,
+      required this.retweetCount,
+      required this.time,
+      required this.tweetPhoto,
+      required this.userAvatar,
+      required this.userName});
 }

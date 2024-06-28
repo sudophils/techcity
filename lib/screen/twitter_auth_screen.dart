@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:techcity/widgets/techcity_button.dart';
 
 class TwitterAuthScreen extends StatefulWidget {
   const TwitterAuthScreen({super.key});
@@ -32,7 +31,7 @@ class _TwitterAuthScreenState extends State<TwitterAuthScreen> {
         height: value,
       );
     }
-   
+
     Widget buildFingerPrint() {
       return const Icon(
         Icons.fingerprint,
