@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:techcity/screen/twitter_home.dart';
 
 class TwitterAuthScreen extends StatefulWidget {
   const TwitterAuthScreen({super.key});
@@ -87,7 +88,14 @@ class _TwitterAuthScreenState extends State<TwitterAuthScreen> {
             verticalSpace(value: 24), // give space
 
             /// build fingerprint function
-            buildFingerPrint()
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const TwitterHome()));
+                },
+                child: buildFingerPrint())
           ],
         ),
       ),

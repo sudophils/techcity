@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:techcity/screen/twitter_home.dart';
+import 'package:techcity/screen/calculator_screen.dart';
+import 'package:techcity/screen/twitter_auth_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: const TwitterHome(),
+      home: const CalculatorScreen(),
     );
   }
 }

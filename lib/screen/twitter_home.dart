@@ -11,6 +11,7 @@ class TwitterHome extends StatefulWidget {
 
 class _TwitterHomeState extends State<TwitterHome>
     with SingleTickerProviderStateMixin {
+
   final List<Tab> myTwitterTab = <Tab>[
     const Tab(text: 'For you'),
     const Tab(text: 'Following'),
@@ -61,6 +62,12 @@ class _TwitterHomeState extends State<TwitterHome>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            child: Icon(Icons.person),
+          ),
+        ),
         actions: [
           Padding(
             padding:
@@ -94,15 +101,20 @@ class _TwitterHomeState extends State<TwitterHome>
   }
 }
 
-class TwitterThreadPage extends StatelessWidget {
+class TwitterThreadPage extends StatefulWidget {
   final TabController controller;
 
   const TwitterThreadPage({super.key, required this.controller});
 
   @override
+  State<TwitterThreadPage> createState() => _TwitterThreadPageState();
+}
+
+class _TwitterThreadPageState extends State<TwitterThreadPage> {
+  @override
   Widget build(BuildContext context) {
     return TabBarView(
-      controller: controller,
+      controller: widget.controller,
       children: [
         SingleChildScrollView(
           child: Column(

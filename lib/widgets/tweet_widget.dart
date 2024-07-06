@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class TweetWidget extends StatelessWidget {
+class TweetWidget extends StatefulWidget {
   final String tweetText;
   final String userName;
   final String handle;
@@ -27,6 +27,17 @@ class TweetWidget extends StatelessWidget {
       super.key});
 
   @override
+  State<TweetWidget> createState() => _TweetWidgetState();
+}
+
+class _TweetWidgetState extends State<TweetWidget> {
+  double commentCount = 0;
+  double likeCount = 0;
+  double analyticsCount = 0;
+  double retweetCount = 0;
+  double shareCount = 0;
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -38,7 +49,7 @@ class TweetWidget extends StatelessWidget {
             children: [
               ClipOval(
                   child: Image.network(
-                userAvatar,
+                widget.userAvatar,
                 width: 40,
               )),
               const SizedBox(
@@ -50,7 +61,7 @@ class TweetWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        userName,
+                        widget.userName,
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge
@@ -59,22 +70,22 @@ class TweetWidget extends StatelessWidget {
                       const SizedBox(
                         width: 8,
                       ),
-                      Text(handle),
+                      Text(widget.handle),
                       const SizedBox(
                         width: 8,
                       ),
-                      Text(time)
+                      Text(widget.time)
                     ],
                   ),
-                  Text(tweetText),
+                  Text(widget.tweetText),
                   const SizedBox(
                     height: 8,
                   ),
-                  if (tweetPhoto != null)
+                  if (widget.tweetPhoto != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        tweetPhoto!,
+                        widget.tweetPhoto!,
                         width: size.width * 0.7,
                         errorBuilder: (context, error, _) {
                           return Container();
@@ -88,17 +99,35 @@ class TweetWidget extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       children: [
                         buildActionButton(
-                            label: '113343', icon: Icons.comment, action: () {}),
+                            label: commentCount.toString(),
+                            icon: Icons.comment,
+                            action: () {
+                              setState(() {
+                                commentCount++;
+                              });
+                            }),
                         buildActionButton(
-                            label: '11',
+                            label: retweetCount.toString(),
                             icon: FontAwesomeIcons.retweet,
+                            action: () {
+                              if (retweetCount == 1) return;
+                              setState(() {
+                                retweetCount++;
+                              });
+
+                            }),
+                        buildActionButton(
+                            label: likeCount.toString(),
+                            icon: Icons.favorite,
                             action: () {}),
                         buildActionButton(
-                            label: '11', icon: Icons.favorite, action: () {}),
+                            label: analyticsCount.toString(),
+                            icon: Icons.analytics,
+                            action: () {}),
                         buildActionButton(
-                            label: '11', icon: Icons.analytics, action: () {}),
-                        buildActionButton(
-                            label: '11', icon: Icons.ios_share, action: () {}),
+                            label: shareCount.toString(),
+                            icon: Icons.ios_share,
+                            action: () {}),
                       ],
                     ),
                   ),
