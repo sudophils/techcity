@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
   final TextEditingController dayController = TextEditingController();
   final TextEditingController essayController = TextEditingController();
 
-  Future<void> openDatabase() async {
+  Future<void> openAppDatabase() async {
     await provider.open(await getDatabasesPath());
   }
 
@@ -85,7 +85,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    openDatabase();
+    openAppDatabase();
     super.initState();
   }
 
