@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:techcity/data/notedata.dart';
 import 'package:techcity/note/note_type_screen.dart';
 
 class NoteHomeScreen extends StatelessWidget {
@@ -110,27 +109,27 @@ class NoteHomeScreen extends StatelessWidget {
             ),
             Expanded(
                 child: ListView(
-              children: [
-                const SizedBox(
+              children: const [
+                SizedBox(
                   height: 24,
                 ),
-                ...allNotes.entries.map((noteType) {
-                  final idx = allNotes.keys.toList().indexOf(noteType.key) + 1;
-                  final count = noteType.value.length;
-                  return buildFolderItem(
-                      action: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NoteTypesScreen(
-                                      type: noteType.key,
-                                      notes: noteType.value,
-                                    )));
-                      },
-                      sNumber: idx.toString(),
-                      heading: noteType.key,
-                      noteCount: count.toString());
-                }).toList()
+                // ...allNotes.entries.map((noteType) {
+                //   final idx = allNotes.keys.toList().indexOf(noteType.key) + 1;
+                //   final count = noteType.value.length;
+                //   return buildFolderItem(
+                //       action: () {
+                //         Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //                 builder: (context) => NoteTypesScreen(
+                //                       type: noteType.key,
+                //                       notes: noteType.value,
+                //                     )));
+                //       },
+                //       sNumber: idx.toString(),
+                //       heading: noteType.key,
+                //       noteCount: count.toString());
+                // }).toList()
               ],
             ))
           ],

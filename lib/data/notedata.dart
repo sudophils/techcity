@@ -1,94 +1,39 @@
 class Note {
+  final int? id;
   final String noteTitle;
   final String noteBody;
   final String noteDate;
   final bool mustRead;
+  final String category;
 
-  Note(
-      {required this.noteTitle,
-      required this.noteBody,
-      required this.noteDate,
-      this.mustRead = false});
+  Note({
+    this.id,
+    required this.noteTitle,
+    required this.noteBody,
+    required this.noteDate,
+    this.mustRead = false,
+    required this.category,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'noteTitle': noteTitle,
+      'noteBody': noteBody,
+      'noteDate': noteDate,
+      'mustRead': mustRead ? 1 : 0,
+      'category': category,
+    };
+  }
+
+  factory Note.fromMap(Map<String, dynamic> map) {
+    return Note(
+      id: map['id'],
+      noteTitle: map['noteTitle'],
+      noteBody: map['noteBody'],
+      noteDate: map['noteDate'],
+      mustRead: map['mustRead'] == 1,
+      category: map['category'],
+    );
+  }
 }
-
-
-
-Map<String, List<Note>> allNotes = {
-  "Personal Notes": personalNotesList,
-  "Educational": educationalNote,
-  "Daily Todo": dailyTodoNotes,
-  "Grocery ": groceryNotes,
-  "Monday Work ": mondayWorkNotes,
-};
-final List<Note> personalNotesList = [
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      mustRead: true,
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05')
-];
-
-final List<Note> educationalNote = [
-
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05')
-];
-final List<Note> dailyTodoNotes = [
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      mustRead: true,
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05')
-];
-final List<Note> groceryNotes = [
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      mustRead: true,
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05')
-];
-final List<Note> mondayWorkNotes = [
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05'),
-  Note(
-      noteTitle: "Today's Quote",
-      mustRead: true,
-      noteBody: 'Keep your face in the sunshine and you cannot see shadows',
-      noteDate: 'Sat. 08:05')
-];
