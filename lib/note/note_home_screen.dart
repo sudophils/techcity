@@ -1,9 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:techcity/note/note_type_screen.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:techcity/viewmodel/note_viewmodel.dart';
 
-class NoteHomeScreen extends StatelessWidget {
+import '../data/notedata.dart';
+import 'note_type_screen.dart';
+
+class NoteHomeScreen extends StatefulWidget {
   const NoteHomeScreen({super.key});
+
+  @override
+  State<NoteHomeScreen> createState() => _NoteHomeScreenState();
+}
+
+class _NoteHomeScreenState extends State<NoteHomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,70 +85,93 @@ class NoteHomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ScopedModel<NoteViewModel>(
+        model: NoteViewModel(),
+        child: ScopedModelDescendant<NoteViewModel>(
+            builder: (context, child, model) {
+          if (model.allNotes.isEmpty) {
+            model.fetchAllNotes();
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'All folders',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge
-                          ?.copyWith(fontWeight: FontWeight.w800),
-                    ),
-                    const Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('This month'),
-                        Icon(Icons.calendar_month)
+                        Text(
+                          'All folders',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge
+                              ?.copyWith(fontWeight: FontWeight.w800),
+                        ),
+                        const Row(
+                          children: [
+                            Text('This month'),
+                            Icon(Icons.calendar_month)
+                          ],
+                        )
                       ],
-                    )
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        model.saveNote(Note(
+                          noteTitle: "Sample Note",
+                          noteBody: "This is a sample note body.",
+                          noteDate: "2024-07-19",
+                          category: 'Monday Vibes',
+                        ));
+                        model.fetchAllNotes();
+                      },
+                      child: Container(
+                        height: 55,
+                        width: 55,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.black38)),
+                        child: const Center(
+                          child: Icon(Icons.add),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.black38)),
-                  child: const Center(
-                    child: Icon(Icons.add),
-                  ),
-                ),
+                Expanded(
+                    child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 24,
+                    ),
+                    ...model.allNotes.entries.map((noteType) {
+                      final idx =
+                          model.allNotes.keys.toList().indexOf(noteType.key) +
+                              1;
+                      final count = noteType.value.length;
+                      return buildFolderItem(
+                          action: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NoteTypesScreen(
+                                          type: noteType.key,
+                                          notes: noteType.value,
+                                        )));
+                          },
+                          sNumber: idx.toString(),
+                          heading: noteType.key,
+                          noteCount: count.toString());
+                    }).toList()
+                  ],
+                ))
               ],
             ),
-            Expanded(
-                child: ListView(
-              children: const [
-                SizedBox(
-                  height: 24,
-                ),
-                // ...allNotes.entries.map((noteType) {
-                //   final idx = allNotes.keys.toList().indexOf(noteType.key) + 1;
-                //   final count = noteType.value.length;
-                //   return buildFolderItem(
-                //       action: () {
-                //         Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //                 builder: (context) => NoteTypesScreen(
-                //                       type: noteType.key,
-                //                       notes: noteType.value,
-                //                     )));
-                //       },
-                //       sNumber: idx.toString(),
-                //       heading: noteType.key,
-                //       noteCount: count.toString());
-                // }).toList()
-              ],
-            ))
-          ],
-        ),
+          );
+        }),
       ),
     );
   }

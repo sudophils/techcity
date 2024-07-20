@@ -26,10 +26,18 @@ class DatabaseService {
         noteBody TEXT,
         noteDate TEXT,
         mustRead INTEGER,
-        category TEXT
+        category TEXT,
+        categoryId INTEGER
       )
     ''';
 
+
+  String tableCategory = '''
+      CREATE TABLE notes(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT
+      )
+    ''';
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'notes_database.db');
@@ -47,7 +55,7 @@ class DatabaseService {
   Future<void> insertNote(Note note) async {
     final db = await database;
     await db.insert(
-      tableName,
+      'notes',
       note.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -55,7 +63,7 @@ class DatabaseService {
 
   Future<List<Note>> notes() async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(tableName);
+    final List<Map<String, dynamic>> maps = await db.query('notes');
 
     return List.generate(maps.length, (i) {
       return Note.fromMap(maps[i]);
@@ -67,6 +75,31 @@ class DatabaseService {
     final List<Map<String, dynamic>> maps = await db.query('notes');
 
     Map<String, List<Note>> categorizedNotes = {};
+
+    final listOfNotes = [
+      {
+        "id": 1,
+        "title": "Hello flutter",
+        "body": "learning how to do shit",
+        "date": "23-2-2024",
+        "mustRead": 0,
+        "category": "Monday Task"
+      },
+      {
+        "id": 2,
+        "title": "Hello flutter",
+        "body": "learning how to do shit",
+        "date": "23-2-2024",
+        "mustRead": 0,
+        "category": "Monday Task"
+      },
+    ];
+
+    final noteMap = {
+      "Monday task": [],
+      "code task": [],
+      "hack task": [],
+    };
 
     for (var map in maps) {
       Note note = Note.fromMap(map);

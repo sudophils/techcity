@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:techcity/screen/calculator_screen.dart';
 import 'package:techcity/screen/home.dart';
-import 'package:techcity/screen/twitter_auth_screen.dart';
+import 'package:techcity/viewmodel/note_viewmodel.dart';
 
-import 'note/counter_screen.dart';
 import 'note/note_home_screen.dart';
 
-void main() {
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NoteViewModel.initDb();
   runApp(const MyApp());
 }
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: const Home(),
+      home: const NoteHomeScreen(),
     );
   }
 }
