@@ -18,6 +18,15 @@ class NoteViewModel extends Model {
     notifyListeners();
   }
 
+  void createNoteFolder(String name) async {
+    await _db.insertFolder(name);
+    notifyListeners();
+  }
+
+  Future<int?> getFolderId(int noteId) async {
+    return await _db.getFolderIdForNote(noteId);
+  }
+
   Future<void> fetchAllNotes() async {
     allNotes = await _db.getAllNotes();
     print(allNotes.length);

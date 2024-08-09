@@ -1,10 +1,18 @@
+class Folder {
+  final int? id;
+  final String name;
+
+  Folder({ this.id, required this.name});
+}
+
 class Note {
   final int? id;
   final String noteTitle;
   final String noteBody;
   final String noteDate;
   final bool mustRead;
-  final String category;
+  final int folderId; // This references the folder's ID
+  String? folder; // This will be used when fetching notes with folder names
 
   Note({
     this.id,
@@ -12,7 +20,8 @@ class Note {
     required this.noteBody,
     required this.noteDate,
     this.mustRead = false,
-    required this.category,
+    required this.folderId,
+    this.folder,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,7 +31,7 @@ class Note {
       'noteBody': noteBody,
       'noteDate': noteDate,
       'mustRead': mustRead ? 1 : 0,
-      'category': category,
+      'folderId': folderId,
     };
   }
 
@@ -33,7 +42,9 @@ class Note {
       noteBody: map['noteBody'],
       noteDate: map['noteDate'],
       mustRead: map['mustRead'] == 1,
-      category: map['category'],
+      folderId: map['folderId'],
+      folder: map[
+          'folder'], // This will be populated when joining with folders table
     );
   }
 }

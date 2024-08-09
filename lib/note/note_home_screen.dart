@@ -14,7 +14,6 @@ class NoteHomeScreen extends StatefulWidget {
 }
 
 class _NoteHomeScreenState extends State<NoteHomeScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -90,7 +89,7 @@ class _NoteHomeScreenState extends State<NoteHomeScreen> {
         child: ScopedModelDescendant<NoteViewModel>(
             builder: (context, child, model) {
           if (model.allNotes.isEmpty) {
-            model.fetchAllNotes();
+            // model.fetchAllNotes();
           }
 
           return Padding(
@@ -120,12 +119,7 @@ class _NoteHomeScreenState extends State<NoteHomeScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        model.saveNote(Note(
-                          noteTitle: "Sample Note",
-                          noteBody: "This is a sample note body.",
-                          noteDate: "2024-07-19",
-                          category: 'Monday Vibes',
-                        ));
+                        model.createNoteFolder("Coding notes");
                         model.fetchAllNotes();
                       },
                       child: Container(
