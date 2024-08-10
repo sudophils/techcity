@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:techcity/note/note_card.dart';
 import 'package:techcity/viewmodel/note_viewmodel.dart';
 
 import '../data/notedata.dart';
+import 'note_card.dart';
 
 class NoteTypesScreen extends StatelessWidget {
   final String type;

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:techcity/blog/post_screen.dart';
-import 'package:techcity/screen/home.dart';
 import 'package:techcity/viewmodel/note_viewmodel.dart';
 
-import 'note/note_home_screen.dart';
+import 'api-networking-lesson/post_screen.dart';
+
 
 
 Future<void> main() async {

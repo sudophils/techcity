@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techcity/blog/post.dart';
+import 'package:techcity/api-networking-lesson/post.dart';
 
 
 

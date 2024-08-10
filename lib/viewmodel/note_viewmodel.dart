@@ -1,7 +1,8 @@
 import 'package:scoped_model/scoped_model.dart';
+import 'package:techcity/database-lesson/data/data_base.dart';
+import 'package:techcity/database-lesson/data/notedata.dart';
 
-import '../data/data_base.dart';
-import '../data/notedata.dart';
+
 
 class NoteViewModel extends Model {
   static late DatabaseService _db;

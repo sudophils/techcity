@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:scoped_model/scoped_model.dart';
-import 'package:techcity/blog/client.dart';
-import 'package:techcity/blog/post.dart';
+import 'package:techcity/api-networking-lesson/post.dart';
+
+import 'client.dart';
 
 class PostService {
   final _apiClient = ApiClient();

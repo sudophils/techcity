@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:techcity/blog/post.dart';
-import 'package:techcity/blog/post_card.dart';
-import 'package:techcity/blog/post_service.dart';
+import 'package:techcity/api-networking-lesson/post.dart';
+import 'package:techcity/api-networking-lesson/post_card.dart';
+import 'package:techcity/api-networking-lesson/post_service.dart';
+
 
 /// step 1: get the apiEndpoint eg. https://dummyjson.com/posts
 /// step 2: create a mapper/decoder class eg. json2dart or app.quicktype.io
@@ -66,8 +67,8 @@ class _TechCityBlogState extends State<TechCityBlog> {
                           body: post.body ?? '',
                           tags: post.tags ?? [],
                           reactions: post.reactions ?? Reactions(),
-                          views: post.views ?? 0))
-                    ].toList(),
+                          views: post.views ?? 0)).toList()
+                    ],
                   ),
                 );
         },
