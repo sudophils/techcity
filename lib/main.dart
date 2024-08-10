@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techcity/blog/post_screen.dart';
 import 'package:techcity/screen/home.dart';
 import 'package:techcity/viewmodel/note_viewmodel.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: const NoteHomeScreen(),
+      home: const TechCityBlog(),
     );
   }
 }
