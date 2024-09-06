@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "522156798839",
+    "project_id": "techcity-a2d6c",
+    "storage_bucket": "techcity-a2d6c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522156798839:android:4163accef3e211b46e2772",
+        "android_client_info": {
+          "package_name": "com.example.techcity"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkMV9On6-eB-8Yglexx65cdk9Yr-SngfU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

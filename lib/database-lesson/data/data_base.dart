@@ -87,35 +87,35 @@ class DatabaseService {
   }
 
 
-  Future<List<Note>> notes() async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('notes');
+  // Future<List<Note>> notes() async {
+  //   final db = await database;
+  //   final List<Map<String, dynamic>> maps = await db.query('notes');
+  //
+  //   return List.generate(maps.length, (i) {
+  //     return Note.fromMap(maps[i]);
+  //   });
+  // }
 
-    return List.generate(maps.length, (i) {
-      return Note.fromMap(maps[i]);
-    });
-  }
-
-  Future<Map<String, List<Note>>> getAllNotes() async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db.rawQuery('''
-      SELECT notes.*, folders.name as folder
-      FROM notes
-      LEFT JOIN folders ON notes.folderId = folders.id
-    ''');
-
-    Map<String, List<Note>> notesInFolder = {};
-
-    for (var map in maps) {
-      Note note = Note.fromMap(map);
-      String folder = map['folder'] ?? 'Disorganised';
-      if (!notesInFolder.containsKey(folder)) {
-        notesInFolder[folder] = []; // creates empty folder
-      }
-      notesInFolder[folder]!.add(note); // adds note to folder
-    }
-    return notesInFolder; // return folder
-  }
+  // Future<Map<String, List<Note>>> getAllNotes() async {
+  //   final db = await database;
+  //   final List<Map<String, dynamic>> maps = await db.rawQuery('''
+  //     SELECT notes.*, folders.name as folder
+  //     FROM notes
+  //     LEFT JOIN folders ON notes.folderId = folders.id
+  //   ''');
+  //
+  //   Map<String, List<Note>> notesInFolder = {};
+  //
+  //   for (var map in maps) {
+  //     Note note = Note.fromMap(map);
+  //     String folder = map['folder'] ?? 'Disorganised';
+  //     if (!notesInFolder.containsKey(folder)) {
+  //       notesInFolder[folder] = []; // creates empty folder
+  //     }
+  //     notesInFolder[folder]!.add(note); // adds note to folder
+  //   }
+  //   return notesInFolder; // return folder
+  // }
 
   Future<void> deleteNote(int id) async {
     final db = await database;

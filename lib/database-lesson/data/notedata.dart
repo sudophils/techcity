@@ -1,18 +1,35 @@
 class Folder {
-  final int? id;
+  final String id;
   final String name;
+  final int noteCount;
 
-  Folder({ this.id, required this.name});
+  Folder({required this.id, required this.name, this.noteCount = 0});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'noteCount': noteCount,
+    };
+  }
+
+  factory Folder.fromMap(Map<String, dynamic> map, String id) {
+    return Folder(
+      id: id,
+      name: map['name'],
+      noteCount: map['noteCount'] ?? 0,
+    );
+  }
 }
 
 class Note {
-  final int? id;
+  final dynamic id;
   final String noteTitle;
   final String noteBody;
   final String noteDate;
   final bool mustRead;
-  final int folderId; // This references the folder's ID
-  String? folder; // This will be used when fetching notes with folder names
+  final dynamic folderId;
+  final String? imageUrl; // Nullable field for image URL
+  String? folder;
 
   Note({
     this.id,
@@ -21,6 +38,7 @@ class Note {
     required this.noteDate,
     this.mustRead = false,
     required this.folderId,
+    this.imageUrl,
     this.folder,
   });
 
@@ -32,19 +50,20 @@ class Note {
       'noteDate': noteDate,
       'mustRead': mustRead ? 1 : 0,
       'folderId': folderId,
+      'imageUrl': imageUrl, // Include image URL in the map
     };
   }
 
-  factory Note.fromMap(Map<String, dynamic> map) {
+  factory Note.fromMap(Map<String, dynamic> map, String id) {
     return Note(
-      id: map['id'],
+      id: id,
       noteTitle: map['noteTitle'],
       noteBody: map['noteBody'],
       noteDate: map['noteDate'],
       mustRead: map['mustRead'] == 1,
       folderId: map['folderId'],
-      folder: map[
-          'folder'], // This will be populated when joining with folders table
+      imageUrl: map['imageUrl'], // Get image URL from map
+      folder: map['folder'],
     );
   }
 }
