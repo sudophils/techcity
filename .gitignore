@@ -9,6 +9,7 @@
 .history
 .svn/
 /lib/firebase_options.dart
+android/app/google-services.json
 migrate_working_dir/
 
 # IntelliJ related
