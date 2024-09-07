@@ -41,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  authController.registerUser(
+                  authController.registerUser(context,
                       email: emailController.text,
                       password: passwordController.text);
                 },
@@ -56,7 +56,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

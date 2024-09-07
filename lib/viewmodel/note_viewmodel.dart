@@ -8,6 +8,8 @@ import 'package:techcity/database-lesson/firebase.dart';
 import 'package:techcity/database-lesson/note/note_home_screen.dart';
 import 'package:techcity/screen/login_screen.dart';
 
+import '../helper.dart';
+
 class NoteViewModel extends Model {
   static late DatabaseService _db;
   Map<String, List<Note>> allNotes = {};
@@ -44,15 +46,26 @@ class NoteViewModel extends Model {
 
 class NoteController extends GetxController with StateMixin<Note> {
   final FirebaseService _firebaseService = FirebaseService();
-  List<Note> allNotesFirebase = [];
+  final allNotesFirebase = <Note>[].obs;
   bool loading = false;
 
   Future<void> fetchNotesInFolder({required String folder}) async {
-    allNotesFirebase = await _firebaseService.getNotesByFolderId(folder);
+    allNotesFirebase.clear();
+    allNotesFirebase.value = await _firebaseService.getNotesByFolderId(folder);
   }
 
-  void saveNote(Note note) async {
-    _firebaseService.addNote(note);
+  @override
+  void onReady() {
+    if (Get.arguments == null) {
+      return;
+    }
+    final folder = Get.arguments['folderId'];
+    fetchNotesInFolder(folder: folder);
+    super.onReady();
+  }
+
+  void saveNote(Note note, {String? imageUrl}) async {
+    _firebaseService.addNote(note, imageUrl: imageUrl);
   }
 }
 
@@ -92,9 +105,10 @@ class AuthController extends GetxController {
   User? get user => _user;
 
   void gotToNoteScreenIfAuthenticated() {
+    _user = _firebaseService.auth.currentUser;
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user != null) {
-        Get.to(NoteHomeScreen());
+      if (user == null) {
+        Get.to(() => const LoginScreen());
       }
     });
   }
@@ -105,28 +119,38 @@ class AuthController extends GetxController {
     super.onInit();
   }
 
-  void loginUser({required String email, required String password}) async {
+  void loginUser(BuildContext context,
+      {required String email, required String password}) async {
     try {
       User? user = await _firebaseService.signInWithEmail(email, password);
       if (user != null) {
-        final userId = user.uid;
         _user = user;
-        Get.to(NoteHomeScreen());
+        Get.to(() => NoteHomeScreen());
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldSnackbar.of(context).show(e.toString());
       print('Error logging in: $e');
     }
   }
 
-  void registerUser({required String email, required String password}) async {
+  void registerUser(BuildContext context,
+      {required String email, required String password}) async {
     try {
       final user = await _firebaseService.signUpWithEmail(email, password);
       if (user != null) {
-        _user = user;
-        Get.to(LoginScreen());
+        Get.to(() => const LoginScreen());
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldSnackbar.of(context).show(e.toString());
       print('Error logging in: $e');
     }
+  }
+
+  void logOut() {
+    _firebaseService.signOut();
+    _user = null;
+    Get.back();
   }
 }

@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             GestureDetector(
               onTap: () {
-                authController.loginUser(
+                authController.loginUser(context,
                     email: emailController.text,
                     password: passwordController.text);
               },

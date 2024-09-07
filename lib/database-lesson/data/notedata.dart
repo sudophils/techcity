@@ -1,14 +1,20 @@
 class Folder {
   final String id;
   final String name;
+  final String userId;
   final int noteCount;
 
-  Folder({required this.id, required this.name, this.noteCount = 0});
+  Folder(
+      {required this.userId,
+      required this.id,
+      required this.name,
+      this.noteCount = 0});
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'noteCount': noteCount,
+      'userId': userId,
     };
   }
 
@@ -16,6 +22,7 @@ class Folder {
     return Folder(
       id: id,
       name: map['name'],
+      userId: map['userId'],
       noteCount: map['noteCount'] ?? 0,
     );
   }
@@ -26,6 +33,7 @@ class Note {
   final String noteTitle;
   final String noteBody;
   final String noteDate;
+  final String userId;
   final bool mustRead;
   final dynamic folderId;
   final String? imageUrl; // Nullable field for image URL
@@ -37,6 +45,7 @@ class Note {
     required this.noteBody,
     required this.noteDate,
     this.mustRead = false,
+    required this.userId,
     required this.folderId,
     this.imageUrl,
     this.folder,
@@ -50,6 +59,7 @@ class Note {
       'noteDate': noteDate,
       'mustRead': mustRead ? 1 : 0,
       'folderId': folderId,
+      'userId': userId,
       'imageUrl': imageUrl, // Include image URL in the map
     };
   }
@@ -62,7 +72,8 @@ class Note {
       noteDate: map['noteDate'],
       mustRead: map['mustRead'] == 1,
       folderId: map['folderId'],
-      imageUrl: map['imageUrl'], // Get image URL from map
+      userId: map['userId'],
+      imageUrl: map['imageUrl'],
       folder: map['folder'],
     );
   }

@@ -13,6 +13,7 @@ class NoteHomeScreen extends GetView<FolderController> {
   @override
   Widget build(BuildContext context) {
     Get.put(FolderController());
+    final authController = Get.put(AuthController());
 
     Widget buildFolderItem(
         {required String sNumber,
@@ -62,9 +63,16 @@ class NoteHomeScreen extends GetView<FolderController> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-          child: Text('MENU'),
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+          child: authController.user != null
+              ? IconButton(
+                  color: Colors.black,
+                  onPressed: () {
+                    authController.logOut();
+                  },
+                  icon: const Icon(Icons.logout))
+              : Text('MENU'),
         ),
         actions: const [
           Padding(
@@ -104,70 +112,38 @@ class NoteHomeScreen extends GetView<FolderController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
+                    showDialog(
+                        useSafeArea: true,
                         context: context,
-                        builder: (context) {
-                          return Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Create a new folder",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge),
+                        builder: (context) => AlertDialog(
+                              title: const Text('Folder name'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: const Text('Cancel'),
                                 ),
-                                Divider(
-                                  color: Colors.grey[300],
-                                ),
-                                const SizedBox(height: 20),
-                                TextField(
-                                  controller: _controller,
-                                  decoration: const InputDecoration(
-                                      labelText: 'Folder Name'),
-                                ),
-                                const SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 65,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            color: Colors.black),
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            if (_controller.text.isNotEmpty) {
-                                              controller.createNoteFolder(
-                                                  _controller.text);
+                                TextButton(
+                                  onPressed: () {
+                                    if (_controller.text.isNotEmpty) {
+                                      controller
+                                          .createNoteFolder(_controller.text);
 
-                                              _controller.text = '';
-                                              Navigator.pop(context);
-                                            }
-                                          },
-                                          child: const Center(
-                                            child: Text(
-                                              'Add Folder',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                      _controller.text = '';
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: Text('Save'),
                                 ),
                               ],
-                            ),
-                          );
-                        });
-                    // model.createNoteFolder("Coding notes");
+                              content: TextField(
+                                controller: _controller,
+                                decoration: const InputDecoration(
+                                    labelText: 'Folder Name'),
+                              ),
+                            ));
+
                     // model.fetchAllNotes();
                   },
                   child: Container(
@@ -203,12 +179,9 @@ class NoteHomeScreen extends GetView<FolderController> {
                         heading: folder.name,
                         noteCount: '',
                         action: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NoteTypesScreen(
-                                        folderId: folder.id as String,
-                                      )));
+                          Get.to(() => NoteTypesScreen(
+                                folderId: folder.id,
+                              ));
                         });
                   }).toList(),
 

@@ -66,7 +66,7 @@ class NoteCard extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: Text(date,
+                  child: Text(date.split("T").first,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium

@@ -8,8 +8,10 @@ import 'data/notedata.dart';
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  FirebaseAuth get auth => _auth;
 
   // Authentication
   Future<User?> signInWithEmail(String email, String password) async {
@@ -60,12 +62,13 @@ class FirebaseService {
     if (imageUrl != null) {
       data['imageUrl'] = imageUrl;
     }
-    await _firestore.collection('notes').add(data);
+    await _fireStore.collection('notes').add(data);
   }
 
   Future<List<Note>> getNotesByFolderId(String folderId) async {
-    QuerySnapshot snapshot = await _firestore
+    QuerySnapshot snapshot = await _fireStore
         .collection('notes')
+        .where('userId', isEqualTo: _auth.currentUser!.uid)
         .where('folderId', isEqualTo: folderId)
         .get();
     return snapshot.docs
@@ -73,29 +76,32 @@ class FirebaseService {
         .toList();
   }
 
+  Future<void> addFolder(String name) async {
+    await _fireStore
+        .collection('folder')
+        .add({'name': name, 'userId': _auth.currentUser!.uid});
+  }
+
   Future<List<Folder>> getFolders() async {
-    QuerySnapshot snapshot = await _firestore.collection('folder').get();
+    QuerySnapshot snapshot = await _fireStore
+        .collection('folder')
+        .where('userId', isEqualTo: _auth.currentUser!.uid)
+        .get();
 
     final folders = snapshot.docs
         .map(
             (doc) => Folder.fromMap(doc.data() as Map<String, dynamic>, doc.id))
         .toList();
+
     return folders;
   }
 
-  // Future<List<Note>> getNotes() async {
-  //   QuerySnapshot snapshot = await _firestore.collection('notes').get();
-  //   return snapshot.docs
-  //       .map((doc) => Note.fromMap(doc.data() as Map<String, dynamic>))
-  //       .toList();
-  // }
-
   Future<void> updateNote(String noteId, Note note) async {
-    await _firestore.collection('notes').doc(noteId).update(note.toMap());
+    await _fireStore.collection('notes').doc(noteId).update(note.toMap());
   }
 
   Future<void> deleteNote(String noteId) async {
-    await _firestore.collection('notes').doc(noteId).delete();
+    await _fireStore.collection('notes').doc(noteId).delete();
   }
 
   // Upload Image to Firebase Storage
@@ -110,9 +116,5 @@ class FirebaseService {
       print(e);
       return null;
     }
-  }
-
-  Future<void> addFolder(String name) async {
-    await _firestore.collection('folder').add({'name': name});
   }
 }
