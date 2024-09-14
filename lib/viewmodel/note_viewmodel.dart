@@ -47,11 +47,13 @@ class NoteViewModel extends Model {
 class NoteController extends GetxController with StateMixin<Note> {
   final FirebaseService _firebaseService = FirebaseService();
   final allNotesFirebase = <Note>[].obs;
-  bool loading = false;
+  final loading = false.obs;
 
   Future<void> fetchNotesInFolder({required String folder}) async {
+    loading.value = true;
     allNotesFirebase.clear();
     allNotesFirebase.value = await _firebaseService.getNotesByFolderId(folder);
+    loading.value = false;
   }
 
   @override

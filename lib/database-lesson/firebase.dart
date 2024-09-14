@@ -7,9 +7,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'data/notedata.dart';
 
 class FirebaseService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+      final FirebaseStorage _storage = FirebaseStorage.instance;
 
   FirebaseAuth get auth => _auth;
 
@@ -18,6 +18,7 @@ class FirebaseService {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {

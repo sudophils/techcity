@@ -79,6 +79,7 @@ class NoteTypesScreen extends GetView<NoteController> {
                                       noteTitle: note.noteTitle,
                                       noteBody: note.noteBody,
                                       date: note.noteDate,
+                                      noteImageUrl: note.imageUrl,
                                       mustRead: note.mustRead))
                             ],
                           ),

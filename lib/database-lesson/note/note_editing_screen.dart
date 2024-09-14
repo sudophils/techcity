@@ -24,9 +24,13 @@ class _NoteEditingScreenState extends State<NoteEditingScreen> {
   String? _imageUrl;
 
   Future<void> _uploadImage() async {
+    _imageUrl = "";
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       String? downloadUrl = await _firebaseService.uploadImage(pickedFile.path);
+      if (downloadUrl == null) {
+        throw Exception('Error uploading image');
+      }
       setState(() {
         _imageUrl = downloadUrl;
       });
@@ -34,11 +38,27 @@ class _NoteEditingScreenState extends State<NoteEditingScreen> {
   }
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _bodyController.dispose();
+    _imageUrl = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controller = Get.put(NoteController());
     final authController = Get.put(AuthController());
     return Scaffold(
-      appBar: AppBar(title: Text('Add Note')),
+      appBar: AppBar(
+        title: Text('Add Note'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.camera_alt),
+            onPressed: _uploadImage,
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -61,6 +81,7 @@ class _NoteEditingScreenState extends State<NoteEditingScreen> {
                     noteTitle: _titleController.text,
                     noteBody: _bodyController.text,
                     noteDate: DateTime.now().toIso8601String(),
+                    imageUrl: _imageUrl ?? '',
                     folderId: Get.arguments['folderId'],
                   );
                   controller.saveNote(note);
