@@ -8,6 +8,7 @@ import 'package:techcity/screen/login_screen.dart';
 import 'package:techcity/viewmodel/note_viewmodel.dart';
 
 import 'firebase_options.dart';
+import 'notification/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,9 +36,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final NotificationService _notificationService = NotificationService();
+
   @override
   void initState() {
     super.initState();
+    _notificationService.init();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       logOutOnSessionExpire();
     });
